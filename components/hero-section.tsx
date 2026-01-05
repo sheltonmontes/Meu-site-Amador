@@ -8,24 +8,23 @@ export function HeroSection() {
       id="inicio"
       className="relative min-h-screen flex items-center justify-center pt-16 md:pt-20 overflow-hidden"
     >
-      {/* Background */}
-      <div className="absolute inset-0 bg-gray-900" />
+      <div className="absolute inset-0 bg-gray-900 dark:bg-slate-950" />
       <div
-        className="absolute inset-0 opacity-30"
+        className="absolute inset-0 opacity-30 dark:opacity-20"
         style={{
           backgroundImage: `url('/modern-futuristic-technology-datacenter-with-blue-.jpg')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-900/70 via-gray-900/50 to-gray-900/70" />
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-900/70 via-gray-900/50 to-gray-900/70 dark:from-slate-950/70 dark:via-slate-950/50 dark:to-slate-950/70" />
 
       <div className="relative z-10 container mx-auto px-4 py-20 md:py-32">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight text-balance mb-6">
             Soluções modernas para um futuro digital
           </h1>
-          <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto text-pretty">
+          <p className="text-lg md:text-xl text-gray-300 dark:text-gray-400 mb-8 max-w-2xl mx-auto text-pretty">
             Transformamos a tecnologia em vantagem competitiva para o seu negócio. Consultoria, segurança e suporte
             técnico de excelência.
           </p>

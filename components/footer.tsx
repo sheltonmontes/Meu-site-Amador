@@ -6,13 +6,15 @@ export function Footer() {
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center justify-center gap-6">
           <div className="flex flex-col items-center gap-2">
-            <Image
-              src="/montes-tech-logo.png"
-              alt="Montes Tech"
-              width={400}
-              height={150}
-              className="h-28 md:h-32 w-auto drop-shadow-md mb-2"
-            />
+            <div className="dark:brightness-200 dark:contrast-150">
+              <Image
+                src="/montes-tech-logo.png"
+                alt="Montes Tech"
+                width={400}
+                height={150}
+                className="h-28 md:h-32 w-auto drop-shadow-md mb-2"
+              />
+            </div>
             <p className="text-sm text-muted-foreground">Soluções modernas para um futuro digital</p>
             <p className="text-xs text-muted-foreground">Maputo, Moçambique</p>
           </div>

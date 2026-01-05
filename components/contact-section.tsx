@@ -67,14 +67,14 @@ export function ContactSection() {
   }
 
   return (
-    <section id="contacto" className="py-20 md:py-32 bg-foreground">
+    <section id="contacto" className="py-20 md:py-32 bg-foreground dark:bg-slate-900">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <p className="text-sm font-medium text-primary uppercase tracking-wider mb-3">Contacto</p>
-          <h2 className="text-3xl md:text-4xl font-bold text-background mb-6 text-balance">
+          <h2 className="text-3xl md:text-4xl font-bold text-background dark:text-white mb-6 text-balance">
             Vamos conversar sobre o seu projecto
           </h2>
-          <p className="text-lg text-background/70 text-pretty">
+          <p className="text-lg text-background/70 dark:text-gray-300 text-pretty">
             Entre em contacto connosco para saber como podemos ajudar a transformar o seu negócio.
           </p>
         </div>
@@ -87,10 +87,10 @@ export function ContactSection() {
                 <Mail className="h-5 w-5 text-primary-foreground" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-background mb-1">Email</h3>
+                <h3 className="text-lg font-semibold text-background dark:text-white mb-1">Email</h3>
                 <a
                   href="mailto:sheltonmontes0@gmail.com"
-                  className="text-background/70 hover:text-background transition-colors"
+                  className="text-background/70 dark:text-gray-300 hover:text-background dark:hover:text-white transition-colors"
                 >
                   sheltonmontes0@gmail.com
                 </a>
@@ -102,8 +102,11 @@ export function ContactSection() {
                 <Phone className="h-5 w-5 text-primary-foreground" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-background mb-1">Telefone</h3>
-                <a href="tel:+258840537659" className="text-background/70 hover:text-background transition-colors">
+                <h3 className="text-lg font-semibold text-background dark:text-white mb-1">Telefone</h3>
+                <a
+                  href="tel:+258840537659"
+                  className="text-background/70 dark:text-gray-300 hover:text-background dark:hover:text-white transition-colors"
+                >
                   +258 84 053 7659
                 </a>
               </div>
@@ -114,8 +117,8 @@ export function ContactSection() {
                 <MapPin className="h-5 w-5 text-primary-foreground" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-background mb-1">Localização</h3>
-                <p className="text-background/70">Maputo, Cidade de Maputo, Moçambique</p>
+                <h3 className="text-lg font-semibold text-background dark:text-white mb-1">Localização</h3>
+                <p className="text-background/70 dark:text-gray-300">Maputo, Cidade de Maputo, Moçambique</p>
               </div>
             </div>
 
@@ -133,11 +136,10 @@ export function ContactSection() {
             </div>
           </div>
 
-          {/* Contact Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-background">
+                <Label htmlFor="name" className="text-background dark:text-white">
                   Nome
                 </Label>
                 <Input
@@ -147,11 +149,11 @@ export function ContactSection() {
                   required
                   onInvalid={handleInvalid}
                   onInput={handleInput}
-                  className="bg-background/10 border-background/20 text-background placeholder:text-background/50 min-h-[44px]"
+                  className="bg-background/10 dark:bg-white/10 border-background/20 dark:border-white/20 text-background dark:text-white placeholder:text-background/50 dark:placeholder:text-white/50 min-h-[44px]"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-background">
+                <Label htmlFor="email" className="text-background dark:text-white">
                   Email
                 </Label>
                 <Input
@@ -162,13 +164,13 @@ export function ContactSection() {
                   required
                   onInvalid={handleInvalid}
                   onInput={handleInput}
-                  className="bg-background/10 border-background/20 text-background placeholder:text-background/50 min-h-[44px]"
+                  className="bg-background/10 dark:bg-white/10 border-background/20 dark:border-white/20 text-background dark:text-white placeholder:text-background/50 dark:placeholder:text-white/50 min-h-[44px]"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="subject" className="text-background">
+              <Label htmlFor="subject" className="text-background dark:text-white">
                 Assunto
               </Label>
               <Input
@@ -178,12 +180,12 @@ export function ContactSection() {
                 required
                 onInvalid={handleInvalid}
                 onInput={handleInput}
-                className="bg-background/10 border-background/20 text-background placeholder:text-background/50 min-h-[44px]"
+                className="bg-background/10 dark:bg-white/10 border-background/20 dark:border-white/20 text-background dark:text-white placeholder:text-background/50 dark:placeholder:text-white/50 min-h-[44px]"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="message" className="text-background">
+              <Label htmlFor="message" className="text-background dark:text-white">
                 Mensagem
               </Label>
               <Textarea
@@ -194,7 +196,7 @@ export function ContactSection() {
                 required
                 onInvalid={handleInvalid}
                 onInput={handleInput}
-                className="bg-background/10 border-background/20 text-background placeholder:text-background/50 resize-none"
+                className="bg-background/10 dark:bg-white/10 border-background/20 dark:border-white/20 text-background dark:text-white placeholder:text-background/50 dark:placeholder:text-white/50 resize-none"
               />
             </div>
 
@@ -202,7 +204,7 @@ export function ContactSection() {
               type="submit"
               size="lg"
               disabled={isSubmitting}
-              className="w-full bg-background text-foreground hover:bg-background/90 min-h-[44px]"
+              className="w-full bg-background dark:bg-white text-foreground dark:text-slate-900 hover:bg-background/90 dark:hover:bg-white/90 min-h-[44px]"
             >
               {isSubmitting ? (
                 "A enviar..."

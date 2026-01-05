@@ -11,11 +11,11 @@ export function WhatsAppButton() {
       href={whatsappUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-8 right-8 z-50 bg-[#25D366] hover:bg-[#20BA5C] text-white p-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 flex items-center justify-center group"
+      className="fixed bottom-8 right-8 z-40 bg-[#25D366] hover:bg-[#20BA5C] text-white p-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 flex items-center justify-center group"
       aria-label="Contacte-nos pelo WhatsApp"
     >
       <MessageCircle size={28} />
-      <span className="absolute right-16 bg-[#25D366] text-white px-4 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+      <span className="absolute right-16 bg-[#25D366] dark:bg-[#20BA5C] text-white px-4 py-2 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
         Mensagem WhatsApp
       </span>
     </a>
