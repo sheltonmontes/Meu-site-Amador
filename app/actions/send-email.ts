@@ -21,7 +21,7 @@ export async function sendEmail(formData: {
           from_email: formData.email,
           subject: formData.subject,
           message: formData.message,
-          to_email: "sheltonmontes0@montestech.online",
+          to_email: "info@montestech.online",
         },
       }),
     })
