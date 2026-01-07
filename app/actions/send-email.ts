@@ -7,9 +7,6 @@ export async function sendEmail(formData: {
   message: string
 }) {
   try {
-    // Enviar email usando um serviço externo
-    // Aqui estou a usar o serviço EmailJS como exemplo, mas pode usar outros como Resend, SendGrid, etc.
-
     const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
       method: "POST",
       headers: {
@@ -24,7 +21,7 @@ export async function sendEmail(formData: {
           from_email: formData.email,
           subject: formData.subject,
           message: formData.message,
-          to_email: "sheltonmontes0@gmail.com",
+          to_email: "sheltonmontes0@montestech.online",
         },
       }),
     })
