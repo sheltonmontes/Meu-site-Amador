@@ -30,7 +30,7 @@ export function ContactSection() {
     const message = formData.get("message") as string
 
     // Criar mailto link com os dados do formulário
-    const mailtoLink = `mailto:info@montestech.online?subject=${encodeURIComponent(
+    const mailtoLink = `mailto:sheltonmontes0@montestech.online?subject=${encodeURIComponent(
       subject,
     )}&body=${encodeURIComponent(`Nome: ${name}\nEmail: ${email}\n\nMensagem:\n${message}`)}`
 
@@ -89,10 +89,10 @@ export function ContactSection() {
               <div>
                 <h3 className="text-lg font-semibold text-background dark:text-white mb-1">Email</h3>
                 <a
-                  href="mailto:info@montestech.online"
+                  href="mailto:sheltonmontes0@montestech.online"
                   className="text-background/70 dark:text-gray-300 hover:text-background dark:hover:text-white transition-colors"
                 >
-                  info@montestech.online
+                  sheltonmontes0@montestech.online
                 </a>
               </div>
             </div>
