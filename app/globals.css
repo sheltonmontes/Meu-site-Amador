@@ -1,8 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
 /* Updated color palette to blue, gray, and white for Montes professional brand */
 :root {
   --background: oklch(0.985 0 0);
