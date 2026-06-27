@@ -112,14 +112,16 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--border);
+    outline-color: rgba(var(--ring) / 0.5);
   }
   html {
     scroll-behavior: smooth;
     color-scheme: light;
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
   }
   .dark {
     color-scheme: dark;
