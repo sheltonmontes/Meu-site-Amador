@@ -55,10 +55,13 @@ export default function LoginDemoPage() {
         return next;
       });
 
-      if (data.ok) {
-        pushLog(`[OK]    ${time}  user=${username}  login bem-sucedido`, "ok");
-        setFeedback({ text: "✅ Acesso concedido. Sessão iniciada com sucesso.", kind: "ok" });
-      } else {
+   if (data.ok) {
+  pushLog(`[OK]    ${time}  user=${username}  login bem-sucedido`, "ok");
+  setFeedback({ text: "✅ Acesso concedido. A redirecionar para o sistema...", kind: "ok" });
+  setTimeout(() => {
+    window.location.href = "/";
+  }, 1200);
+} else {
         pushLog(`[FALHA] ${time}  user=${username}  palavra-passe incorreta`, "fail");
         if (data.failsInWindow >= 3) {
           setFeedback({
