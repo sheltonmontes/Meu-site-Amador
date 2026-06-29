@@ -60,7 +60,7 @@ export default function LoginDemoPage() {
   setFeedback({ text: "✅ Acesso concedido. A redirecionar para o sistema...", kind: "ok" });
   setTimeout(() => {
     window.location.href = "/";
-  }, 1200);
+  }, 10000);
 } else {
         pushLog(`[FALHA] ${time}  user=${username}  palavra-passe incorreta`, "fail");
         if (data.failsInWindow >= 3) {
