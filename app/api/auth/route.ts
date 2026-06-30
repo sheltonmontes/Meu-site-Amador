@@ -49,14 +49,21 @@ export async function POST(req: NextRequest) {
     alertTriggered = true;
     lastAlertCount.set(username, failsInWindow);
 
-    // 🔔 Aqui é onde, em produção, dispararias uma notificação real:
-    // - webhook para Telegram Bot API
-    // - webhook para ntfy.sh
-    // - email via Resend/SendGrid
-    // Fica como trabalho futuro mencionado na monografia.
     console.warn(
       `[ALERTA SEGURANÇA] ${failsInWindow} falhas em ${WINDOW_MS / 1000}s para user="${username}" às ${new Date(now).toISOString()}`
     );
+
+    // 🔔 Notificação push real para o telemóvel via ntfy.sh
+    const NTFY_TOPIC = "smm-ustm-deteccao-7x9k2";
+    fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
+      method: "POST",
+      headers: {
+        "Title": "🚨 Alerta de Segurança - USTM",
+        "Priority": "urgent",
+        "Tags": "rotating_light,warning",
+      },
+      body: `Ataque de força bruta detetado!\nUtilizador: ${username}\n${failsInWindow} falhas em ${WINDOW_MS / 1000}s\n${new Date(now).toLocaleTimeString("pt-PT")}`,
+    }).catch((err) => console.error("Falha ao enviar notificação ntfy:", err));
   }
 
   if (failsInWindow < FAIL_THRESHOLD) {
