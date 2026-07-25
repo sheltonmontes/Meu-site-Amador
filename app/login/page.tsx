@@ -57,7 +57,7 @@ export default function LoginDemoPage() {
 
    if (data.ok) {
   pushLog(`[OK]    ${time}  user=${username}  login bem-sucedido`, "ok");
-  setFeedback({ text: "✅ Acesso concedido. A redirecionar para o sistema...", kind: "ok" });
+  setFeedback({ text: "Acesso concedido. A redirecionar para o sistema...", kind: "ok" });
   setTimeout(() => {
     window.location.href = "/";
   }, 10000);
@@ -65,12 +65,12 @@ export default function LoginDemoPage() {
         pushLog(`[FALHA] ${time}  user=${username}  palavra-passe incorreta`, "fail");
         if (data.failsInWindow >= 3) {
           setFeedback({
-            text: `🔒 Conta sinalizada para revisão de segurança — ${data.failsInWindow} tentativas falhadas nesta janela.`,
+            text: `Conta sinalizada para revisão de segurança — ${data.failsInWindow} tentativas falhadas nesta janela.`,
             kind: "locked",
           });
         } else {
           setFeedback({
-            text: `❌ Palavra-passe incorreta. (${data.failsInWindow} de 3 falhas nesta janela)`,
+            text: `Palavra-passe incorreta. (${data.failsInWindow} de 3 falhas nesta janela)`,
             kind: "fail",
           });
         }
@@ -78,7 +78,7 @@ export default function LoginDemoPage() {
 
       if (data.alertTriggered) {
         pushLog(
-          `[ALERTA] ⚠️  ${data.failsInWindow} falhas em ≤60s para user=${username} — POSSÍVEL ATAQUE DE FORÇA BRUTA`,
+          `[ALERTA] ${data.failsInWindow} falhas em ≤60s para user=${username} — POSSÍVEL ATAQUE DE FORÇA BRUTA`,
           "alert"
         );
         setShowAlertBanner(true);
@@ -113,7 +113,7 @@ export default function LoginDemoPage() {
         }}
       >
         <div>
-          <h1 style={{ margin: 0, fontSize: 19 }}>🔐 Portal de Autenticação — Sistema Académico (Demonstração)</h1>
+          <h1 style={{ margin: 0, fontSize: 19 }}>Portal de Autenticação — Sistema Académico (Demonstração)</h1>
           <div style={{ fontSize: 12, opacity: 0.85, marginTop: 3 }}>
             Por trás deste formulário corre a mesma lógica de deteção descrita no Capítulo V da monografia
           </div>
@@ -239,7 +239,7 @@ export default function LoginDemoPage() {
         {/* Monitor panel */}
         <div style={{ background: "white", borderRadius: 10, padding: "18px 20px", boxShadow: "0 2px 10px rgba(0,0,0,0.08)", border: "1px solid #e2e2e2" }}>
           <h2 style={{ margin: "0 0 12px", fontSize: 14, color: "#B71417", textTransform: "uppercase", letterSpacing: 0.5, borderBottom: "2px solid #B71417", paddingBottom: 8 }}>
-            ⚙️ Motor de Deteção (servidor — API route)
+            Motor de Deteção (servidor — API route)
           </h2>
 
           {showAlertBanner && (
@@ -254,7 +254,7 @@ export default function LoginDemoPage() {
                 fontSize: 13,
               }}
             >
-              🚨 ALERTA GERADO — 3 falhas em &lt;60s detetadas para este utilizador!
+               ALERTA GERADO — 3 falhas em &lt;60s detetadas para este utilizador!
             </div>
           )}
 
@@ -290,7 +290,7 @@ export default function LoginDemoPage() {
           </div>
 
           <h2 style={{ margin: "18px 0 12px", fontSize: 14, color: "#B71417", textTransform: "uppercase", letterSpacing: 0.5, borderBottom: "2px solid #B71417", paddingBottom: 8 }}>
-            📄 Registo de Logs
+             Registo de Logs
           </h2>
           <div style={{ height: 220, overflowY: "auto", background: "#0D1117", color: "#c9d1d9", borderRadius: 8, padding: 10, fontFamily: "Consolas, monospace", fontSize: 12.5, lineHeight: 1.5 }}>
             {log.map((l, i) => (
