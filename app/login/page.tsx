@@ -57,7 +57,7 @@ export default function LoginDemoPage() {
 
       if (data.ok) {
         pushLog(`[OK]    ${time}  user=${username}  login bem-sucedido`, "ok");
-        setFeedback({ text: "✅ Acesso concedido. Sessão iniciada com sucesso.", kind: "ok" });
+        setFeedback({ text: " Acesso concedido. Sessão iniciada com sucesso.", kind: "ok" });
       } else {
         pushLog(`[FALHA] ${time}  user=${username}  palavra-passe incorreta`, "fail");
         if (data.failsInWindow >= 3) {
