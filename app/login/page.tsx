@@ -62,12 +62,12 @@ export default function LoginDemoPage() {
         pushLog(`[FALHA] ${time}  user=${username}  palavra-passe incorreta`, "fail");
         if (data.failsInWindow >= 3) {
           setFeedback({
-            text: `🔒 Conta sinalizada para revisão de segurança — ${data.failsInWindow} tentativas falhadas nesta janela.`,
+            text: ` Conta sinalizada para revisão de segurança — ${data.failsInWindow} tentativas falhadas nesta janela.`,
             kind: "locked",
           });
         } else {
           setFeedback({
-            text: `❌ Palavra-passe incorreta. (${data.failsInWindow} de 3 falhas nesta janela)`,
+            text: ` Palavra-passe incorreta. (${data.failsInWindow} de 3 falhas nesta janela)`,
             kind: "fail",
           });
         }
@@ -75,7 +75,7 @@ export default function LoginDemoPage() {
 
       if (data.alertTriggered) {
         pushLog(
-          `[ALERTA] ⚠️  ${data.failsInWindow} falhas em ≤60s para user=${username} — POSSÍVEL ATAQUE DE FORÇA BRUTA`,
+          `[ALERTA]   ${data.failsInWindow} falhas em ≤60s para user=${username} — POSSÍVEL ATAQUE DE FORÇA BRUTA`,
           "alert"
         );
         setShowAlertBanner(true);
