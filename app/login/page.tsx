@@ -110,7 +110,7 @@ export default function LoginDemoPage() {
         }}
       >
         <div>
-          <h1 style={{ margin: 0, fontSize: 19 }}>🔐 Portal de Autenticação — Sistema Académico (Demonstração)</h1>
+          <h1 style={{ margin: 0, fontSize: 19 }}> Portal de Autenticação — Sistema Académico (Demonstração)</h1>
           <div style={{ fontSize: 12, opacity: 0.85, marginTop: 3 }}>
             Por trás deste formulário corre a mesma lógica de deteção descrita no Capítulo V da monografia
           </div>
