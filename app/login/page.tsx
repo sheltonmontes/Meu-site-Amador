@@ -65,12 +65,12 @@ export default function LoginDemoPage() {
         pushLog(`[FALHA] ${time}  user=${username}  palavra-passe incorreta`, "fail");
         if (data.failsInWindow >= 3) {
           setFeedback({
-            text: `🔒 Conta sinalizada para revisão de segurança — ${data.failsInWindow} tentativas falhadas nesta janela.`,
+            text: ` Conta sinalizada para revisão de segurança — ${data.failsInWindow} tentativas falhadas nesta janela.`,
             kind: "locked",
           });
         } else {
           setFeedback({
-            text: `❌ Palavra-passe incorreta. (${data.failsInWindow} de 3 falhas nesta janela)`,
+            text: ` Palavra-passe incorreta. (${data.failsInWindow} de 3 falhas nesta janela)`,
             kind: "fail",
           });
         }
@@ -78,7 +78,7 @@ export default function LoginDemoPage() {
 
       if (data.alertTriggered) {
         pushLog(
-          `[ALERTA] ⚠️  ${data.failsInWindow} falhas em ≤60s para user=${username} — POSSÍVEL ATAQUE DE FORÇA BRUTA`,
+          `[ALERTA]   ${data.failsInWindow} falhas em ≤60s para user=${username} — POSSÍVEL ATAQUE DE FORÇA BRUTA`,
           "alert"
         );
         setShowAlertBanner(true);
@@ -113,7 +113,7 @@ export default function LoginDemoPage() {
         }}
       >
         <div>
-          <h1 style={{ margin: 0, fontSize: 19 }}>🔐 Portal de Autenticação — Sistema Académico (Demonstração)</h1>
+          <h1 style={{ margin: 0, fontSize: 19 }}> Portal de Autenticação — Sistema Académico (Demonstração)</h1>
           <div style={{ fontSize: 12, opacity: 0.85, marginTop: 3 }}>
             Por trás deste formulário corre a mesma lógica de deteção descrita no Capítulo V da monografia
           </div>
