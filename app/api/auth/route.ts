@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
           "Tags": "rotating_light,warning",
         },
         body: 
-`Ataque de forca bruta detetado!
+`Ataque de força bruta detectado!
 Utilizador: ${username}
 IP: ${ip}
 ${failsInWindow} falhas em ${WINDOW_MS / 1000}s
