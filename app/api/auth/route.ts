@@ -16,10 +16,15 @@ const CORRECT_PASSWORD = "USTM2025";
 const WINDOW_MS = 60_000; // 60 segundos
 const FAIL_THRESHOLD = 3;
 
-type LoginEvent = { ok: boolean; t: number };
+type LoginEvent = { 
+  ok: boolean; 
+  t: number; 
+  ip: string;
+};
 
 // Estado em memória: username -> eventos recentes
 const userWindows = new Map<string, LoginEvent[]>();
+
 // Estado em memória: último número de falhas em que um alerta já foi emitido
 const lastAlertCount = new Map<string, number>();
 
@@ -30,29 +35,53 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Utilizador inválido" }, { status: 400 });
   }
 
+  // Obter IP do cliente
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0] ||
+    req.headers.get("x-real-ip") ||
+    "IP desconhecido";
+
   const now = Date.now();
   const ok = password === CORRECT_PASSWORD;
 
   // Atualizar a janela deslizante deste utilizador
   const events = userWindows.get(username) ?? [];
-  events.push({ ok, t: now });
+
+  events.push({ 
+    ok, 
+    t: now,
+    ip
+  });
+
   const windowEvents = events.filter((e) => now - e.t <= WINDOW_MS);
+
   userWindows.set(username, windowEvents);
 
   const failsInWindow = windowEvents.filter((e) => !e.ok).length;
 
   // Lógica de alerta: dispara de novo a cada +3 falhas dentro da janela
   let alertTriggered = false;
+
   const prevAlertCount = lastAlertCount.get(username) ?? 0;
 
-  if (!ok && failsInWindow >= FAIL_THRESHOLD && failsInWindow - prevAlertCount >= FAIL_THRESHOLD) {
+  if (
+    !ok &&
+    failsInWindow >= FAIL_THRESHOLD &&
+    failsInWindow - prevAlertCount >= FAIL_THRESHOLD
+  ) {
     alertTriggered = true;
+
     lastAlertCount.set(username, failsInWindow);
-console.warn(
-      `[ALERTA SEGURANÇA] ${failsInWindow} falhas em ${WINDOW_MS / 1000}s para user="${username}" às ${new Date(now).toISOString()}`
+
+    console.warn(
+      `[ALERTA SEGURANÇA] ${failsInWindow} falhas em ${
+        WINDOW_MS / 1000
+      }s para user="${username}" IP="${ip}" às ${new Date(now).toISOString()}`
     );
-// 🔔 Notificação push real para o telemóvel via ntfy.sh
+
+    // 🔔 Notificação push real para o telemóvel via ntfy.sh
     const NTFY_TOPIC = "smm-ustm-deteccao-7x9k2";
+
     try {
       await fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
         method: "POST",
@@ -61,18 +90,27 @@ console.warn(
           "Priority": "urgent",
           "Tags": "rotating_light,warning",
         },
-        body: `Ataque de forca bruta detetado!\nUtilizador: ${username}\n${failsInWindow} falhas em ${WINDOW_MS / 1000}s\n${new Date(now).toLocaleTimeString("pt-PT")}`,
+        body: 
+`Ataque de forca bruta detetado!
+Utilizador: ${username}
+IP: ${ip}
+${failsInWindow} falhas em ${WINDOW_MS / 1000}s
+${new Date(now).toLocaleTimeString("pt-PT")}`,
       });
+
     } catch (err) {
       console.error("Falha ao enviar notificacao ntfy:", err);
     }
   }
+
   if (failsInWindow < FAIL_THRESHOLD) {
     lastAlertCount.set(username, 0);
   }
 
   return NextResponse.json({
     ok,
+    username,
+    ip,
     failsInWindow,
     alertTriggered,
     totalAttempts: windowEvents.length,
