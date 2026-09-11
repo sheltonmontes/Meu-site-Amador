@@ -1,7 +1,7 @@
 // app/login/page.tsx
 //
 // Página de demonstração para a defesa de monografia.
-// Reproduz visualmente o protótipo de deteção de força bruta
+// Reproduz visualmente o protótipo de detecção de força bruta
 // descrito no Capítulo V, mas agora a correr como página real
 // no domínio montestech.online, com a lógica no servidor (API route).
 
@@ -115,13 +115,13 @@ export default function LoginDemoPage() {
         <div>
           <h1 style={{ margin: 0, fontSize: 19 }}>Portal de Autenticação — Sistema Académico (Demonstração)</h1>
           <div style={{ fontSize: 12, opacity: 0.85, marginTop: 3 }}>
-            Por trás deste formulário corre a mesma lógica de deteção descrita no Capítulo V da monografia
+            Por trás deste formulário corre a mesma lógica de detecção descrita no Capítulo V da monografia
           </div>
         </div>
         <div style={{ fontSize: 12, textAlign: "right", opacity: 0.9 }}>
           Shelton Montes Maurício Montinho
           <br />
-          Defesa de Monografia · USTM 2025
+          Defesa de Monografia · USTM 2026
         </div>
       </header>
 
@@ -231,7 +231,7 @@ export default function LoginDemoPage() {
 
           <div style={{ fontSize: 11.5, color: "#999", marginTop: 16, lineHeight: 1.5, borderTop: "1px dashed #ddd", paddingTop: 12 }}>
             <b>Para a demonstração:</b> a palavra-passe correta é <b>USTM2025</b>. Tenta digitar uma palavra-passe
-            errada <b>3 vezes seguidas</b> dentro de 60 segundos e observa o painel à direita — o sistema vai gerar um
+            errada <b>3 vezes seguidas</b> dentro de 60 segundos e observa o painel à direita o sistema vai gerar um
             alerta automaticamente, tal como faria com um ataque de força bruta real.
           </div>
         </div>
@@ -239,7 +239,7 @@ export default function LoginDemoPage() {
         {/* Monitor panel */}
         <div style={{ background: "white", borderRadius: 10, padding: "18px 20px", boxShadow: "0 2px 10px rgba(0,0,0,0.08)", border: "1px solid #e2e2e2" }}>
           <h2 style={{ margin: "0 0 12px", fontSize: 14, color: "#B71417", textTransform: "uppercase", letterSpacing: 0.5, borderBottom: "2px solid #B71417", paddingBottom: 8 }}>
-            Motor de Deteção (servidor — API route)
+            Motor de Detecção (servidor API route)
           </h2>
 
           {showAlertBanner && (
