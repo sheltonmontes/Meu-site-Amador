@@ -1,32 +1,26 @@
 // app/api/auth/route.ts
 //
-// API Route do Next.js (App Router) que implementa a mesma lógica
-// de deteção de força bruta descrita no Capítulo V da monografia:
-// sliding window — 3 ou mais falhas para o mesmo utilizador em
-// menos de 60 segundos gera um alerta.
+// API Route do Next.js (App Router) que implementa a deteção de força bruta
+// descrita no Capítulo V da monografia: sliding window — 3 ou mais falhas
+// para o mesmo utilizador em menos de 60 segundos gera um alerta.
 //
-// NOTA IMPORTANTE: este armazenamento em memória (Map) é apenas para
-// demonstração. Reinicia sempre que a função serverless "adormece"
-// (comportamento normal do Vercel em planos gratuitos). Para uso
-// real seria necessário Redis, Vercel KV, ou uma base de dados.
+// NOTA: o armazenamento em memória (Map) é apenas para demonstração.
+// Para uso real seria necessário Redis, Vercel KV ou uma base de dados.
 
 import { NextRequest, NextResponse } from "next/server";
 
 const CORRECT_PASSWORD = "USTM2025";
 const WINDOW_MS = 60_000; // 60 segundos
 const FAIL_THRESHOLD = 3;
+const NTFY_TOPIC = "smm-ustm-deteccao-7x9k2";
 
-type LoginEvent = { 
-  ok: boolean; 
-  t: number; 
-  ip: string;
-};
+type LoginEvent = { ok: boolean; t: number; ip: string };
+type UserState = { events: LoginEvent[]; failsSinceAlert: number };
 
-// Estado em memória: username -> eventos recentes
-const userWindows = new Map<string, LoginEvent[]>();
-
-// Estado em memória: último número de falhas em que um alerta já foi emitido
-const lastAlertCount = new Map<string, number>();
+// Guardado em globalThis para não ser reiniciado quando o Next.js
+// recompila módulos (modo dev) — evita contadores a voltar a zero.
+const g = globalThis as unknown as { __authState?: Map<string, UserState> };
+const users: Map<string, UserState> = g.__authState ?? (g.__authState = new Map());
 
 export async function POST(req: NextRequest) {
   const { username, password } = await req.json();
@@ -35,77 +29,69 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Utilizador inválido" }, { status: 400 });
   }
 
-  // Obter IP do cliente
   const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0] ||
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     req.headers.get("x-real-ip") ||
     "IP desconhecido";
 
   const now = Date.now();
   const ok = password === CORRECT_PASSWORD;
 
-  // Atualizar a janela deslizante deste utilizador
-  const events = userWindows.get(username) ?? [];
+  // Estado deste utilizador
+  const state: UserState = users.get(username) ?? { events: [], failsSinceAlert: 0 };
 
-  events.push({ 
-    ok, 
-    t: now,
-    ip
-  });
+  state.events.push({ ok, t: now, ip });
+  state.events = state.events.filter((e) => now - e.t <= WINDOW_MS);
 
-  const windowEvents = events.filter((e) => now - e.t <= WINDOW_MS);
+  const failsInWindow = state.events.filter((e) => !e.ok).length;
 
-  userWindows.set(username, windowEvents);
+  // Contador independente da janela: quantas falhas houve desde o último alerta.
+  // (A versão anterior comparava com failsInWindow, que DIMINUI quando eventos
+  // antigos saem da janela — isso bloqueava alertas seguintes.)
+  if (!ok) state.failsSinceAlert++;
+  if (failsInWindow < FAIL_THRESHOLD) state.failsSinceAlert = 0;
 
-  const failsInWindow = windowEvents.filter((e) => !e.ok).length;
-
-  // Lógica de alerta: dispara de novo a cada +3 falhas dentro da janela
   let alertTriggered = false;
+  let notified: boolean | null = null; // null = não houve tentativa de envio
 
-  const prevAlertCount = lastAlertCount.get(username) ?? 0;
-
-  if (
-    !ok &&
-    failsInWindow >= FAIL_THRESHOLD &&
-    failsInWindow - prevAlertCount >= FAIL_THRESHOLD
-  ) {
+  if (!ok && failsInWindow >= FAIL_THRESHOLD && state.failsSinceAlert >= FAIL_THRESHOLD) {
     alertTriggered = true;
-
-    lastAlertCount.set(username, failsInWindow);
+    state.failsSinceAlert = 0;
 
     console.warn(
-      `[ALERTA SEGURANÇA] ${failsInWindow} falhas em ${
-        WINDOW_MS / 1000
-      }s para user="${username}" IP="${ip}" às ${new Date(now).toISOString()}`
+      `[ALERTA SEGURANÇA] ${failsInWindow} falhas em ${WINDOW_MS / 1000}s ` +
+        `para user="${username}" IP="${ip}" às ${new Date(now).toISOString()}`
     );
 
-    // 🔔 Notificação push real para o telemóvel via ntfy.sh
-    const NTFY_TOPIC = "smm-ustm-deteccao-7x9k2";
-
     try {
-      await fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
+      const res = await fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
         method: "POST",
         headers: {
-          "Title": "Alerta de Seguranca - USTM",
-          "Priority": "urgent",
-          "Tags": "rotating_light,warning",
+          Title: "Alerta de Seguranca - USTM",
+          Priority: "urgent",
+          Tags: "rotating_light,warning",
         },
-        body: 
-`Ataque de força bruta detectado!
-Utilizador: ${username}
-IP: ${ip}
-${failsInWindow} falhas em ${WINDOW_MS / 1000}s
-${new Date(now).toLocaleTimeString("pt-PT")}`,
+        body:
+          `Ataque de força bruta detectado!\n` +
+          `Utilizador: ${username}\n` +
+          `IP: ${ip}\n` +
+          `${failsInWindow} falhas em ${WINDOW_MS / 1000}s\n` +
+          `${new Date(now).toLocaleTimeString("pt-PT")}`,
+        signal: AbortSignal.timeout(5000), // não deixa o pedido pendurado
       });
 
+      // fetch NÃO lança erro em 429/500 — é preciso verificar o estado
+      notified = res.ok;
+      if (!res.ok) {
+        console.error("ntfy recusou o envio:", res.status, await res.text());
+      }
     } catch (err) {
+      notified = false;
       console.error("Falha ao enviar notificacao ntfy:", err);
     }
   }
 
-  if (failsInWindow < FAIL_THRESHOLD) {
-    lastAlertCount.set(username, 0);
-  }
+  users.set(username, state);
 
   return NextResponse.json({
     ok,
@@ -113,7 +99,8 @@ ${new Date(now).toLocaleTimeString("pt-PT")}`,
     ip,
     failsInWindow,
     alertTriggered,
-    totalAttempts: windowEvents.length,
+    notified,
+    totalAttempts: state.events.length,
     timestamp: now,
   });
 }
